@@ -1,0 +1,152 @@
+
+{
+  "version": "taleem-deck-v2",
+  "name": "Test Deck",
+  "background": {
+    "backgroundColor": "#000000",
+    "backgroundImage": null,
+    "backgroundImageOpacity": 0.3
+  },
+  "deck": [
+    {
+      "type": "titleAndSubtitle",
+      "start": 0,
+      "end": 5,
+      "data": [
+        {
+          "name": "title",
+          "content": "Hello Taleem",
+          "timings": [
+            {
+              "time": 0,
+              "event": "show"
+            }
+          ]
+        },
+        {
+          "name": "subtitle",
+          "content": "This works!",
+          "timings": [
+            {
+              "time": 2,
+              "event": "show"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "titleAndSubtitle",
+      "start": 5,
+      "end": 10,
+      "data": [
+        {
+          "name": "title",
+          "content": "Second Slide",
+          "timings": [
+            {
+              "time": 5,
+              "event": "show"
+            }
+          ]
+        },
+        {
+          "name": "subtitle",
+          "content": "Still working",
+          "timings": [
+            {
+              "time": 7,
+              "event": "show"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "start": 10,
+      "end": 20,
+      "data": [
+        {
+          "name": "heading",
+          "content": "Main Points",
+          "timings": [
+            {
+              "time": 10,
+              "event": "show"
+            }
+          ]
+        },
+        {
+          "name": "bullet",
+          "content": "First point",
+          "timings": [
+            {
+              "time": 11,
+              "event": "show"
+            }
+          ]
+        },
+        {
+          "name": "bullet",
+          "content": "Second point",
+          "timings": [
+            {
+              "time": 12,
+              "event": "show"
+            }
+          ]
+        },
+        {
+          "name": "bullet",
+          "content": "Third point",
+          "timings": [
+            {
+              "time": 13,
+              "event": "show"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "eq",
+      "start": 20,
+      "end": 30,
+      "data": [
+        {
+          "name": "heading",
+          "content": "Math Start",
+          "timings": [
+            {
+              "time": 20,
+              "event": "show"
+            }
+          ],
+          "spItems": [
+            {
+              "name": "text",
+              "content": "Intro"
+            }
+          ]
+        },
+        {
+          "name": "math",
+          "content": "a + b",
+          "timings": [
+            {
+              "time": 22,
+              "event": "show"
+            }
+          ],
+          "spItems": [
+            {
+              "name": "text",
+              "content": "Step"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
