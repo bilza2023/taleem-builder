@@ -24,17 +24,17 @@ function addLine(ctx, type, text, at) {
 
 // ───── line methods ─────
 
-TaleemBuilder.prototype.eqHeading = function (text, at = 0) {
+TaleemBuilder.prototype.eqHeading = function (text, at ) {
   addLine(this, "heading", text, at);
   return this;
 };
 
-TaleemBuilder.prototype.eqMath = function (text, at = 0) {
+TaleemBuilder.prototype.eqMath = function (text, at ) {
   addLine(this, "math", text, at);
   return this;
 };
 
-TaleemBuilder.prototype.eqText = function (text, at = 0) {
+TaleemBuilder.prototype.eqText = function (text, at) {
   addLine(this, "text", text, at);
   return this;
 };

@@ -5,7 +5,7 @@ export function compileSlide(slide) {
     const base = {
       name: item.type,
       content: item.text,
-      timings: toTimings(item.at)
+      timings: toTimings(item.at, slide.start)
     };
 
     // 🔥 preserve spItems if present

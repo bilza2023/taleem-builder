@@ -2,7 +2,7 @@
 import TaleemBuilder from "../../core/Builder.js";
 import { v4 as uuid } from "uuid";
 
-TaleemBuilder.prototype.bar = function (label, value, at = 0) {
+TaleemBuilder.prototype.bar = function (label, value, at) {
   this._currentSlide.addItem({
     id: uuid(),
     type: "bar",

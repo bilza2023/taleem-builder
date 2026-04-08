@@ -3,7 +3,7 @@
 import TaleemBuilder from "../../core/Builder.js";
 import { v4 as uuid } from "uuid";
 
-TaleemBuilder.prototype.card = function (text, icon, at = 0) {
+TaleemBuilder.prototype.card = function (text, icon, at ) {
   this._currentSlide.addItem({
     id: uuid(),
     type: "card",

@@ -3,7 +3,7 @@
 import TaleemBuilder from "../../core/Builder.js";
 import { v4 as uuid } from "uuid";
 
-TaleemBuilder.prototype.image = function (src, at = 0) {
+TaleemBuilder.prototype.image = function (src, at ) {
   this._currentSlide.addItem({
     id: uuid(),
     type: "image",   // MUST match golden deck name

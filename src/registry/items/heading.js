@@ -4,7 +4,7 @@
 import { v4 as uuid } from "uuid";
 import TaleemBuilder from "../../core/Builder.js";
 
-TaleemBuilder.prototype.heading = function (text, at = 0) {
+TaleemBuilder.prototype.heading = function (text, at ) {
   if (!this._currentSlide) {
     throw new Error("No active slide.");
   }
