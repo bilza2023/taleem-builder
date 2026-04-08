@@ -1,15 +1,40 @@
 {
     "name": "taleem-builder",
     "version": "1.0.0",
+    "description": "Deterministic slide engine for generating structured, timeline-based educational decks.",
     "type": "module",
     "main": "src/index.js",
+    "exports": {
+      ".": "./src/index.js"
+    },
+    "files": [
+      "src"
+    ],
     "scripts": {
-        "test": "vitest"
+      "test": "vitest run",
+      "test:watch": "vitest",
+      "dev": "vitest",
+      "build": "echo 'No build step required'"
+    },
+    "keywords": [
+      "slides",
+      "education",
+      "deck",
+      "builder",
+      "presentation",
+      "learning",
+      "timeline",
+      "ai-content"
+    ],
+    "author": "Bilal Tariq",
+    "license": "MIT",
+    "dependencies": {
+      "uuid": "^13.0.0"
     },
     "devDependencies": {
-        "vitest": "^4.1.2"
+      "vitest": "^4.1.2"
     },
-    "dependencies": {
-        "uuid": "^13.0.0"
+    "engines": {
+      "node": ">=18"
     }
-}
+  }
