@@ -1,6 +1,7 @@
+
 # taleem-builder (v2)
 
-Deterministic builder for creating `deck-v2` slide decks using a timeline-first API.
+Deterministic builder for creating `taleem-deck-v2` slide decks using a timeline-first API.
 
 ---
 
@@ -8,14 +9,14 @@ Deterministic builder for creating `deck-v2` slide decks using a timeline-first 
 
 `taleem-builder` is a **DSL (Domain Specific Language)** for authoring slide decks.
 
-It converts **chainable builder calls** into **canonical `deck-v2` JSON**.
+It converts **chainable builder calls** into **validated `taleem-deck-v2` JSON**.
 
 The system is:
 
-* deterministic
-* timeline-driven
-* schema-aligned
-* AI-friendly
+- deterministic  
+- timeline-driven  
+- schema-enforced  
+- safe by default  
 
 ---
 
@@ -23,35 +24,32 @@ The system is:
 
 ### 1. Timeline is absolute
 
-* All time values are **absolute (seconds)**
-* No durations are used
-* No relative offsets at API level
+- All time values are **absolute (seconds)**
+- No durations
+- No relative offsets
 
 ---
 
 ### 2. Slides are continuous
 
-* A slide **starts at `b.at(time)`**
-* A slide **ends at the start of the next slide**
+```js
+import TaleemBuilder, { validateDeck } from "taleem-builder";
+```
 
 ```js
-b.at(0).titleSlide()
+b.at(0).titleAndSubtitle()
 b.at(10).bulletList()
-```
+````
 
 → slide 1: `[0 → 10]`
 → slide 2: `[10 → ...]`
 
 ---
 
-### 3. No manual end per slide
+### 3. No manual slide end
 
-* `.to()` / `.end()` per slide is **NOT allowed**
-* Prevents:
-
-  * time gaps
-  * overlaps
-  * inconsistent timelines
+* No `.to()` or per-slide `.end()`
+* Prevents gaps and overlaps
 
 ---
 
@@ -73,20 +71,11 @@ b.end(60)
 .bullet("Text", 22)
 ```
 
-→ becomes:
+→
 
 ```json
 "timings": [{ "time": 22, "event": "show" }]
 ```
-
----
-
-### 6. Missing item time
-
-If time is not provided:
-
-* fallback = previous item time OR slide start
-* resolved during compile
 
 ---
 
@@ -104,15 +93,18 @@ b.background()
   .image(null)
   .opacity(0.3);
 
-b.at(0).titleAndSubtitle()
+b.at(0)
+  .titleAndSubtitle()
   .title("Taleem Slides", 0)
   .subtitle("Structured learning", 3);
 
-b.at(10).bulletList()
+b.at(10)
+  .bulletList()
   .bullet("Point 1", 10)
   .bullet("Point 2", 12);
 
-b.at(20).imageSlide()
+b.at(20)
+  .imageSlide()
   .image("image.png", 20);
 
 b.end(30);
@@ -122,45 +114,35 @@ const deck = b.build();
 
 ---
 
-## Slide API
+## Supported Slide Types
 
-Each slide is started with:
-
-```js
-b.at(time).<slideType>()
+```
+titleAndSubtitle
+titleAndPara
+bulletList
+twoColumnText
+imageSlide
+imageWithTitle
+imageWithCaption
+imageLeftBulletsRight
+imageRightBulletsLeft
+table
+barChart
+progressbar
+quoteSlide
+keyIdeasSlide
+focusList
+eq
+fillImage
+imageStrip
+imageGrid
+textGrid
+skeleton
 ```
 
 ---
 
-### Supported slide types
-
-* `titleSlide`
-* `titleAndSubtitle`
-* `titleAndPara`
-* `bulletList`
-* `twoColumnText`
-* `imageSlide`
-* `imageWithTitle`
-* `imageWithCaption`
-* `imageLeftBulletsRight`
-* `imageRightBulletsLeft`
-* `table`
-* `statistic`
-* `donutChart`
-* `bigNumber`
-* `barChart`
-* `quoteSlide`
-* `quoteWithImage`
-* `cornerWordsSlide`
-* `contactSlide`
-* `fillImage`
-* `eq`
-
----
-
-## Item API (General)
-
-Common item methods:
+## Item API (Common)
 
 ```js
 .title(content, time)
@@ -168,44 +150,30 @@ Common item methods:
 .para(content, time)
 .bullet(content, time)
 .image(src, time)
-.left(content, time)
-.right(content, time)
+.leftText(content, time)
+.rightText(content, time)
 ```
 
 ---
 
 ## EQ Slide
 
-EQ slides support structured reasoning with side panels.
-
----
-
-### Example
-
 ```js
-b.at(140).eq()
+b.at(140)
+  .eq()
+  .eqHeading("Structured Explanation", 140)
+    .eqSpText("Intro")
+    .eqSpImage("/img.png")
 
-  .heading("Structured Explanation", 140)
-    .spText("This is the first line")
-    .spImage("/images/image.png")
-
-  .math("$(a + b)^2 = (a + b)(a + b)$", 143)
-    .spText("Second line explanation")
-    .spImage("/images/box.webp")
-
-  .math("$= a^2 + 2ab + b^2$", 146)
-    .spText("Final step explanation")
-    .spImage("/images/image.png");
+  .eqMath("a + b", 143)
+    .eqSpText("Step");
 ```
-
----
 
 ### Rules
 
-* `.heading()` or `.math()` creates a **new line**
-* `.spText()` / `.spImage()` attach to **last line**
+* `.eqHeading()` / `.eqMath()` → create new line
+* `.eqSpText()` / `.eqSpImage()` → attach to last line
 * Order is preserved
-* Max ~6 lines recommended (content rule, not enforced)
 
 ---
 
@@ -240,7 +208,7 @@ Returns:
 
 ```json
 {
-  "version": "deck-v2",
+  "version": "taleem-deck-v2",
   "name": "...",
   "background": { ... },
   "deck": [ ... ]
@@ -249,50 +217,53 @@ Returns:
 
 ---
 
-## Validation Rules
+## Validation (IMPORTANT)
 
-Builder enforces:
+All decks are **automatically validated** during build.
 
-* monotonic time (strictly increasing slides)
-* final `.end()` present
-* valid slide types
-* valid item structure
+```js
+const deck = b.build(); // validated here
+```
 
-Throws on failure.
+If invalid:
+
+* builder throws immediately
+* no invalid deck is ever returned
+
+This guarantees:
+
+* strict structure
+* renderer safety
+* no silent failures
 
 ---
 
 ## Design Principles
 
 1. **Deterministic**
-
-   * same input → same output
+   Same input → same output
 
 2. **Timeline-first**
+   Everything anchored in absolute time
 
-   * everything anchored in time
+3. **No implicit durations**
+   Only start points
 
-3. **No implicit slide durations**
+4. **Builder-first authoring**
+   JSON is output, not source
 
-   * only start points
-
-4. **No JSON authoring**
-
-   * builder is the only authoring surface
-
-5. **Compiler owns schema**
-
-   * DSL does not expose JSON structure
+5. **Schema-enforced**
+   All output must pass validation
 
 ---
 
 ## Anti-Patterns (Forbidden)
 
 ```js
-// ❌ no end per slide
+// ❌ no per-slide end
 b.at(0).to(10)
 
-// ❌ no overlapping times
+// ❌ no overlapping slides
 b.at(10)
 b.at(5)
 
@@ -305,9 +276,18 @@ b.build()
 ## Summary
 
 * define slides using `.at(time)`
-* define items using absolute times
-* do NOT define slide ends
+* define items using absolute time
+* do NOT define slide durations
 * MUST define final `.end(time)`
-* builder produces valid `deck-v2` JSON
+* builder always returns validated JSON
 
 ---
+
+## Status
+
+✅ Builder API stable
+✅ Schema enforced
+✅ Fully deterministic
+🚀 Ready for production use
+
+

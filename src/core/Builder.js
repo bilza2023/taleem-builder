@@ -1,5 +1,6 @@
 // src/core/Builder.js
 import { compileDeck } from "../compiler/compileDeck.js";
+import { validateDeck } from "../schema/taleem-schema.js";
 
 export default class TaleemBuilder {
     constructor() {
@@ -44,24 +45,21 @@ export default class TaleemBuilder {
   
     /* ───────────── build ───────────── */
   
-    // build() {
-    //   if (this._endTime === null) {
-    //     throw new Error("Final end time missing. Use b.end(time)");
-    //   }
-  
-    //   // defer to compiler (added later)
-    //   return {
-    //     version: "taleem-deck-v2",
-    //     name: this._meta.name,
-    //     background: this._background,
-    //     deck: this._slides // raw for now
-    //   };
-    // }
     build() {
-        if (this._endTime === null) {
-          throw new Error("Final end time missing. Use b.end(time)");
-        }
-      
-        return compileDeck(this);
+      if (this._endTime === null) {
+        throw new Error("Final end time missing. Use b.end(time)");
       }
+    
+      const deck = compileDeck(this);
+    
+      // 🔥 enforce schema
+      try {
+        validateDeck(deck);
+      } catch (err) {
+        console.error(JSON.stringify(err.errors, null, 2));
+        throw err;
+      }
+    
+      return deck;
+    }
   }

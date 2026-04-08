@@ -80,3 +80,4 @@ import "./registry/items/leftText.js";
 import "./registry/items/rightText.js";
 // export
 export default TaleemBuilder;
+export { validateDeck, deckSchema } from "./schema/taleem-schema.js";
